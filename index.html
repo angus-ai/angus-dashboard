@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Angus Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Library for charts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
+    
+    <link href="css/index.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <h1 class="text-center">Dashboard</h1>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div id="settings_bar">
+            <div class="pull-right text-center" style="position: absolute; top:-3%; left:80%;">
+              <p>Next refresh</p>
+              <div class="pie-timer" style="display: none; margin: 0px;">
+                <div class="timer-slot"><div class="timer-l"></div></div>
+                <div class="timer-r"></div>
+              </div>
+            </div>
+
+            <div id="loading">
+              <img src="images/loading.gif" alt="">
+            </div>
+
+            <ul id="menu" class="none">
+              <li>
+                <div class="dropdown">
+                  <a class="dropdown-toggle item-menu" role="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Click to change the period
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownMenu1List">
+                    <li><a class="period" href="#">24 hours (default)</a></li>
+                    <li><a class="period" href="#">3 days</a></li>
+                    <li><a class="period" href="#">1 week</a></li>
+                  </ul>
+                </div>
+              </li>
+              <li><p class="cta item-menu" id="current_period_of_time">Data for the last 24 hours</p></li>
+            </ul>
+
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <div id="chart" class="text-center"></div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 2em;">
+        <div class="col-xs-12 col-md-5 col-md-offset-1 metric-block">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Passing by
+                <a class='pull-right tip' data-toggle="tooltip" data-placement="top" title="Count of people who passed (not necessarily stopping or looking) in front of the camera during the specified time duration.">
+                  <i class='glyphicon glyphicon-question-sign' style="color: #0099E1"></i>
+                </a>
+              </h3>
+            </div>
+            <div class="panel-body">
+              <div class="col-xs-2">
+                <p id="passing_by" class="metric">0</p>
+              </div>
+              <div class="col-xs-8 col-xs-offset-2">
+                <p>
+                  <span class="title">people passing by</span><br>over the last period
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-xs-12 col-md-5 metric-block">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Average stopping time
+                <a class='pull-right tip' data-toggle="tooltip" data-placement="top" title="Average time a person, among the “interested” people, stay still in front of the camera. (in second)">
+                  <i class='glyphicon glyphicon-question-sign' style="color: #0099E1"></i>
+                </a>
+              </h3>
+            </div>
+            <div class="panel-body">
+              <div class="col-xs-2">
+                <p id="stopping_time" class="metric">0</p>
+              </div>
+              <div class="col-xs-8 col-xs-offset-2">
+                <p>
+                  <span class="title">seconds</span><br>of average stopping time
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-5 col-md-offset-1 metric-block">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Interested
+                <a class='pull-right tip' data-toggle="tooltip" data-placement="top" title="Count of people who stopped for at least 3 seconds and looked in the direction of the camera more than 1 second.">
+                  <i class='glyphicon glyphicon-question-sign' style="color: #0099E1"></i>
+                </a>
+              </h3>
+            </div>
+            <div class="panel-body">
+              <div class="col-xs-2">
+                <p id="interested" class="metric">0</p>
+              </div>
+              <div class="col-xs-8 col-xs-offset-2">
+                <p>
+                  <span class="title">people interested</span><br>over the last period
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-5 metric-block">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Average attention time
+                <a class='pull-right tip' data-toggle="tooltip" data-placement="top" title="Average time a person, among the “interested” people, spend looking at the camera. (in second)">
+                  <i class='glyphicon glyphicon-question-sign' style="color: #0099E1"></i>
+                </a>
+              </h3>
+            </div>
+            <div class="panel-body">
+              <div class="col-xs-2">
+                <p id="attention_time" class="metric">0</p>
+              </div>
+              <div class="col-xs-8 col-xs-offset-2">
+                <p>
+                  <span class="title">seconds</span><br>of average attention time
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-5 col-md-offset-1 metric-block">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Gender
+                <a class='pull-right tip' data-toggle="tooltip" data-placement="top" title="The gender repartition of all the “interested” people.">
+                  <i class='glyphicon glyphicon-question-sign' style="color: #0099E1"></i>
+                </a>
+              </h3>
+            </div>
+            <div class="panel-body">
+              <div class="item-content" id="gender_donut">No Data For Now</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-xs-12 col-md-5 metric-block">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Category
+                <a class='pull-right tip' data-toggle="tooltip" data-placement="top" title="Population segmentation counts of all the “interested” people for each category.">
+                  <i class='glyphicon glyphicon-question-sign' style="color: #0099E1"></i>
+                </a>
+              </h3>
+            </div>
+            <div class="panel-body">
+              <div class="item-content" id="age_repartition_pie">No Data For Now</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>    
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Libraries for charts -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/async@2/dist/async.min.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>
