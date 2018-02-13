@@ -51,7 +51,7 @@ $(function() {
   $( '.pie-timer' ).show();
   
   setInterval(function () {
-    aggregateAndDisplayData(client_id);
+    getData();
   }, 60000);
   
   $('[data-toggle="tooltip"]').tooltip();
