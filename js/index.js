@@ -4,20 +4,33 @@ $(function() {
   
   var period = "24h", oneTick = 1;
   
-  var query = {
-    fromDate: new Date(Date.now() - convertPeriodToMs('1d')).toISOString(),
-    toDate: new Date(),
-    aboutAWeekAgo: new Date(Date.now() - convertPeriodToMs('7d')).toISOString()
-  };
-  
-  var token = 'YOUR TOKEN';
-  
-  var globalUrl = 'https://data.angus.ai';
+  var globalUrl = 'https://ppd-data.angus.ai';
   
   var urlGlobal = `/api/1/entities?metrics=satisfaction,gender,category,passing_by,interested,stop_time,attention_time`;
   
   var urlChart = `/api/1/entities?metrics=passing_by,interested&time=by_hour`;
   
+  var urlAuth = 'https://ppd-console.angus.ai/api-token-authstream/';
+  
+  var crendentials = {
+    username: localStorage.getItem('username'),
+    clientId: localStorage.getItem('clientId'),
+    accessToken: localStorage.getItem('accessToken'),
+    authToken: localStorage.getItem('authToken')
+  };
+  
+  
+  if (!crendentials.authToken || !crendentials.username || !crendentials.clientId || !crendentials.accessToken) {
+    flushLocalStorage();
+    window.location.href = './login.html';
+  }
+  
+  function flushLocalStorage() {
+    localStorage.removeItem('username'),
+    localStorage.removeItem('clientId'),
+    localStorage.removeItem('accessToken'),
+    localStorage.removeItem('authToken')
+  }
   
   function convertPeriodToMs(period) {
     if (period.indexOf('m') !== -1) {
@@ -33,7 +46,7 @@ $(function() {
   }
   
   function getCurrentTime() {
-    return new Date(Date.now());//.setHours(0, 0, 0, 0);
+    return new Date(Date.now());
   }
   
   var load;
@@ -81,43 +94,53 @@ $(function() {
     
   });
   
+  $('#logout').on('click', function(e) {
+    e.preventDefault();
+    flushLocalStorage();
+    window.location.href = './login.html';
+  });
+  
+  $('#email').html(crendentials.username);
+  
+  function refreshToken(cb) {
+    console.log('refresh');
+    var data = {
+      username: crendentials.username,
+      client_id: crendentials.clientId,
+      access_token: crendentials.accessToken,
+    };
+    
+    Rest.post(urlAuth, {}, data, function(err, result) {
+      if (!err) {
+        crendentials.authToken = result.token;
+        localStorage.setItem('authToken', result.token);
+        return cb(null, result.token);
+      }
+      cb(err);
+    });
+  }
   
   function getGlobalData(cb) {
-    var twoHoursBefore = 0;
-    if (period !== '24h') {
-      //twoHoursBefore = convertPeriodToMs('2h');
-    }
-    var fromDate = (new Date(getCurrentTime() - convertPeriodToMs(period) - twoHoursBefore).toISOString());
-    $.ajax({
-      type: 'GET',
-      url: globalUrl + urlGlobal + `&from_date=${fromDate}`,
-      headers: { 'Authorization': `Bearer ${token}` },
-      success: function (results) {
-        cb(null, results);
-      },
-      error: function(a, b, c) {
-        cb('Error');
-      }
+    var fromDate = (new Date(getCurrentTime() - convertPeriodToMs(period)).toISOString());
+    var url = globalUrl + urlGlobal + `&from_date=${fromDate}`;
+    var header = {
+      'Authorization': `Bearer ${crendentials.authToken}`
+    };
+    
+    Rest.get(url, header, function(err, data) {
+      cb(err, data);
     });
   }
   
   function getChartData(urlPage, cb) {
-    var twoHoursBefore = 0;
-    if (period !== '24h') {
-      //twoHoursBefore = convertPeriodToMs('2h');
-    }
-    var fromDate = (new Date(getCurrentTime() - convertPeriodToMs(period) - twoHoursBefore).toISOString());
+    var fromDate = (new Date(getCurrentTime() - convertPeriodToMs(period)).toISOString());
     var url = urlPage ? globalUrl + urlPage : (globalUrl + urlChart + `&from_date=${fromDate}`);
-    $.ajax({
-      type: 'GET',
-      url: url,
-      headers: { 'Authorization': `Bearer ${token}` },
-      success: function (results) {
-        cb(null, results);
-      },
-      error: function(a, b, c) {
-        cb('Error');
-      }
+    var header = {
+      'Authorization': `Bearer ${crendentials.authToken}`
+    };
+    
+    Rest.get(url, header, function(err, data) {
+      cb(err, data);
     });
   }
   
@@ -131,15 +154,24 @@ $(function() {
         interested(results);
         ageRepartition(results);
       } else {
-        console.log(err);
+        console.log(err.response);
       }
-    });
-  
-    retrieveAndParseChartData(function(err) {
-      if (err) {
-        console.log(err);
-        alert('Please refresh token in index.js file. At this page https://console.angus.ai/api-token-authstream/');
-      }
+      
+      retrieveAndParseChartData(function(err) {
+        if (err && err.response.data.code === 'expired_jwt') {
+          refreshToken(function(err) {
+            if (!err) {
+              getData();
+            } else {
+              flushLocalStorage();
+              window.location.href = './login.html';
+            }
+          });
+        } else if (err) {
+          flushLocalStorage();
+          window.location.href = './login.html';
+        }
+      });
     });
   }
   

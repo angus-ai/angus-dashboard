@@ -1,0 +1,15 @@
+.footer {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  border-top: 1px solid #cdcdcd;
+  border-bottom: 0px;
+  padding-top: 7px;
+  text-align: center;
+  -moz-border-image: -moz-linear-gradient(right, white, #cdcdcd, white);
+  -webkit-border-image: -webkit-linear-gradient(right, white, #cdcdcd, white);
+  border-image: linear-gradient(to left, white, #cdcdcd, white);
+  border-image-slice: 1;
+  color: black !important;
+}

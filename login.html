@@ -10,6 +10,7 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
+    <link href="css/footer.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,36 +20,52 @@
     <![endif]-->
   </head>
   <body>
-    <h1 class="text-center">Login</h1>
+    <nav class="navbar navbar-default" style="background: white;">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/"><img width="100" src="images/logo.png"></a>
+        </div>
+      </div>
+    </nav>
     <div class="container">
       <div class="row">
         <div class="col-xs-12 col-md-6 col-md-offset-3">
           <div class="login-form">
+            <h2>Sign in</h2>
+            <p id="error" class="text-danger hide"></p>
             <form>
               <div class="form-group">
-                <label for="email">Email address</label>
+                <label for="email">Email Address</label>
                 <input type="email" class="form-control" id="email" placeholder="Email or Username">
+                <p id="emailError" class="text-danger hide"></p>
               </div>
               <div class="form-group">
                 <label for="clientId">Client ID</label>
                 <input type="text" class="form-control" id="clientId" placeholder="Client ID">
+                <p id="clientIdError" class="text-danger hide"></p>
               </div>
               <div class="form-group">
-                <label for="accessKey">Access Key</label>
-                <input type="text" class="form-control" id="accessKey" placeholder="Access key">
+                <label for="accessToken">Access Token</label>
+                <input type="text" class="form-control" id="accessToken" placeholder="Access Token">
+                <p id="accessTokenError" class="text-danger hide"></p>
               </div>
-              <button type="submit" class="btn btn-default submit">Submit</button>
+              <button id="submit" type="submit" class="btn btn-primary btn-block">Sign in</button>
             </form>
           </div>
         </div>
       </div> 
     </div>
-    
+    <div class="footer">
+      <p> © 2015-2018 Angus.ai &nbsp;&nbsp;&nbsp;&nbsp; <a class="angus_blue" href="http://www.angus.ai/terms-of-use/">Terms of Use</a>  &nbsp;&nbsp;&nbsp;&nbsp;  <a class="angus_blue" href="http://www.angus.ai/contact-us/">Help</a>
+      </p>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/rest.js"></script>
     <script src="js/login.js"></script>
   </body>
 </html>

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
     
     <link href="css/index.css" rel="stylesheet">
+    <link href="css/footer.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,6 +23,26 @@
     <![endif]-->
   </head>
   <body>
+    <nav class="navbar navbar-default" style="background: white;">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/"><img width="100" src="images/logo.png"></a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+               <span id="email">-</span> <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+               <a href="#" id="logout">Log out</a>
+              </li>
+            </ul>
+          </li>
+             
+        </ul>
+      </div>
+    </nav>
     <h1 class="text-center">Dashboard</h1>
     <div class="container">
       <div class="row">
@@ -179,7 +200,11 @@
 
         </div>
       </div>
-    </div>    
+    </div>
+    <div class="footer">
+      <p> © 2015-2018 Angus.ai &nbsp;&nbsp;&nbsp;&nbsp; <a class="angus_blue" href="http://www.angus.ai/terms-of-use/">Terms of Use</a>  &nbsp;&nbsp;&nbsp;&nbsp;  <a class="angus_blue" href="http://www.angus.ai/contact-us/">Help</a>
+      </p>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -190,6 +215,8 @@
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/async@2/dist/async.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/rest.js"></script>
     <script src="js/index.js"></script>
   </body>
 </html>
