@@ -1,7 +1,7 @@
 $(function() {
   
   let storage = window['localStorage'];
-  let url = 'https://ppd-console.angus.ai/api-token-authstream/';
+  let url = 'https://console.angus.ai/api-token-authstream/';
   
   $('#submit').on('click', function(e) {
     e.preventDefault();

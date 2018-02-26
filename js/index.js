@@ -4,13 +4,13 @@ $(function() {
   
   var period = "24h", oneTick = 1;
   
-  var globalUrl = 'https://ppd-data.angus.ai';
+  var globalUrl = 'https://data.angus.ai';
   
   var urlGlobal = `/api/1/entities?metrics=satisfaction,gender,category,passing_by,interested,stop_time,attention_time`;
   
   var urlChart = `/api/1/entities?metrics=passing_by,interested&time=by_hour`;
   
-  var urlAuth = 'https://ppd-console.angus.ai/api-token-authstream/';
+  var urlAuth = 'https://console.angus.ai/api-token-authstream/';
   
   var crendentials = {
     username: localStorage.getItem('username'),
